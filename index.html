@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aurelia Smart City — Unified Urban Portal</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Emergency Top Banner -->
+  <div class="emergency-ticker" role="region" aria-label="Emergency Hotlines">
+    <div class="container ticker-inner">
+      <span class="badge-live">24/7 EMERGENCY</span>
+      <div class="hotline-list">
+        <span><strong>Unified Emergency:</strong> <a href="tel:112">112</a></span>
+        <span><strong>Police:</strong> <a href="tel:100">100</a></span>
+        <span><strong>Ambulance:</strong> <a href="tel:108">108</a></span>
+        <span><strong>Fire &amp; Rescue:</strong> <a href="tel:101">101</a></span>
+        <span><strong>Disaster Helpline:</strong> <a href="tel:1077">1077</a></span>
+      </div>
+      <button id="sosBtn" class="btn-sos">Trigger SOS Alert</button>
+    </div>
+  </div>
+
+  <!-- Navigation Header -->
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="#" class="brand">
+        <span class="brand-icon">◈</span>
+        <div>
+          <span class="brand-title">AURELIA</span>
+          <span class="brand-sub">Smart City Portal</span>
+        </div>
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="#statistics">City Stats</a>
+        <a href="#transportation">Transportation</a>
+        <a href="#hospitals">Hospitals</a>
+        <a href="#education">Education</a>
+        <a href="#services">Public Services</a>
+        <a href="#emergency">Emergency</a>
+        <a href="#locations">Locations</a>
+      </nav>
+      <div class="nav-actions">
+        <input type="search" id="globalSearch" placeholder="Search city services, routes, hospitals..." aria-label="Search portal" />
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <div class="pill">Live Urban Telemetry • Updated Real-Time</div>
+        <h1>Connected Infrastructure for a Smarter, Safer Tomorrow</h1>
+        <p>Access live transit status, hospital bed availability, educational institutions, municipal e-services, emergency response, and civic landmarks in one unified command center.</p>
+        <div class="hero-cta">
+          <a href="#services" class="btn btn-primary">Explore Public Services</a>
+          <a href="#locations" class="btn btn-outline">Interactive City Map</a>
+        </div>
+      </div>
+      <div class="hero-status-card">
+        <h3>Live City Pulse</h3>
+        <div class="pulse-grid">
+          <div class="pulse-item">
+            <span class="pulse-label">Air Quality (AQI)</span>
+            <span class="pulse-value good" id="liveAqi">42 — Good</span>
+          </div>
+          <div class="pulse-item">
+            <span class="pulse-label">Grid Load</span>
+            <span class="pulse-value" id="livePower">68% (42% Solar)</span>
+          </div>
+          <div class="pulse-item">
+            <span class="pulse-label">Traffic Flow</span>
+            <span class="pulse-value good" id="liveTraffic">Smooth (89%)</span>
+          </div>
+          <div class="pulse-item">
+            <span class="pulse-label">Water Supply</span>
+            <span class="pulse-value good">Normal • 99.4%</span>
+          </div>
+        </div>
+        <div class="pulse-footer">
+          <span id="liveClock">Syncing telemetry...</span>
+          <button id="refreshTelemetry" class="btn-link">Refresh Now ↻</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. City Statistics -->
+  <section id="statistics" class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow">URBAN ANALYTICS</span>
+          <h2>City Statistics &amp; Key Indicators</h2>
+        </div>
+        <div class="filter-group">
+          <button class="chip active" data-stat-period="2026">2026 Live</button>
+          <button class="chip" data-stat-period="target">2030 Vision</button>
+        </div>
+      </div>
+      <div class="stats-grid" id="statsGrid">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Transportation -->
+  <section id="transportation" class="section bg-alt">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow">SMART MOBILITY</span>
+          <h2>Transportation &amp; Live Transit</h2>
+        </div>
+        <div class="filter-group" id="transportFilters">
+          <button class="chip active" data-filter="all">All Modes</button>
+          <button class="chip" data-filter="Metro">Metro Rail</button>
+          <button class="chip" data-filter="Bus">Electric Bus</button>
+          <button class="chip" data-filter="EV">EV Charging</button>
+          <button class="chip" data-filter="Bike">Smart Bike</button>
+        </div>
+      </div>
+      <div class="cards-grid" id="transportGrid"></div>
+    </div>
+  </section>
+
+  <!-- 3. Hospitals & Healthcare -->
+  <section id="hospitals" class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow">HEALTHCARE NETWORK</span>
+          <h2>Hospitals &amp; Live Bed Availability</h2>
+        </div>
+        <div class="filter-group" id="hospitalFilters">
+          <button class="chip active" data-filter="all">All Hospitals</button>
+          <button class="chip" data-filter="Trauma">24/7 Trauma</button>
+          <button class="chip" data-filter="Multi-Specialty">Multi-Specialty</button>
+          <button class="chip" data-filter="Public">Public Clinic</button>
+        </div>
+      </div>
+      <div class="cards-grid" id="hospitalGrid"></div>
+    </div>
+  </section>
+
+  <!-- 4. Education -->
+  <section id="education" class="section bg-alt">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow">KNOWLEDGE &amp; INNOVATION</span>
+          <h2>Education Institutions &amp; Digital Libraries</h2>
+        </div>
+        <div class="filter-group" id="educationFilters">
+          <button class="chip active" data-filter="all">All Institutions</button>
+          <button class="chip" data-filter="University">Universities</button>
+          <button class="chip" data-filter="School">Smart Schools</button>
+          <button class="chip" data-filter="Library">Digital Libraries</button>
+        </div>
+      </div>
+      <div class="cards-grid" id="educationGrid"></div>
+    </div>
+  </section>
+
+  <!-- 5. Public Services -->
+  <section id="services" class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow">E-GOVERNANCE</span>
+          <h2>Citizen Public Services</h2>
+        </div>
+        <p class="section-desc">Submit civic service requests or access instant digital utilities online.</p>
+      </div>
+      <div class="services-layout">
+        <div class="cards-grid" id="servicesGrid"></div>
+        <div class="service-form-card">
+          <h3>Quick Citizen Request</h3>
+          <p>Report a street light outage, water leak, waste pickup, or road repair.</p>
+          <form id="citizenRequestForm">
+            <label>
+              Service Category
+              <select id="reqCategory" required>
+                <option value="Water & Sanitation">Water &amp; Sanitation</option>
+                <option value="Power & Streetlights">Power &amp; Streetlights</option>
+                <option value="Waste Management">Smart Waste Management</option>
+                <option value="Roads & Traffic">Roads &amp; Traffic Signals</option>
+                <option value="Certificates & Permits">Birth/Death/Property Certificates</option>
+              </select>
+            </label>
+            <label>
+              Ward / Zone
+              <input type="text" id="reqZone" placeholder="e.g., Sector 4, Central District" required />
+            </label>
+            <label>
+              Description
+              <textarea id="reqDesc" rows="3" placeholder="Briefly describe the issue or request..." required></textarea>
+            </label>
+            <button type="submit" class="btn btn-primary full-width">Submit Ticket</button>
+          </form>
+          <div id="ticketFeedback" class="feedback-box hidden"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Emergency Information -->
+  <section id="emergency" class="section emergency-section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow light">RAPID RESPONSE &amp; SAFETY</span>
+          <h2>Emergency Information &amp; Shelters</h2>
+        </div>
+      </div>
+      <div class="emergency-grid" id="emergencyGrid"></div>
+    </div>
+  </section>
+
+  <!-- 7. Important Locations -->
+  <section id="locations" class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow">CIVIC DIRECTORY</span>
+          <h2>Important Locations &amp; Landmarks</h2>
+        </div>
+        <div class="filter-group" id="locationFilters">
+          <button class="chip active" data-filter="all">All Places</button>
+          <button class="chip" data-filter="Government">Government</button>
+          <button class="chip" data-filter="Tech Hub">Tech &amp; Innovation</button>
+          <button class="chip" data-filter="Culture">Parks &amp; Culture</button>
+          <button class="chip" data-filter="Transport">Transit Hubs</button>
+        </div>
+      </div>
+
+      <div class="map-explorer">
+        <div class="interactive-map" id="cityMap" aria-label="Interactive City Sector Map">
+          <div class="map-grid-overlay"></div>
+          <div class="map-river"></div>
+          <div class="map-highway-h"></div>
+          <div class="map-highway-v"></div>
+          <span class="map-sector" style="top:12%;left:12%;">NORTH TECH DISTRICT</span>
+          <span class="map-sector" style="top:12%;right:12%;">EAST GREEN BELT</span>
+          <span class="map-sector" style="bottom:12%;left:12%;">WEST TRANSIT CORRIDOR</span>
+          <span class="map-sector" style="bottom:12%;right:12%;">SOUTH CIVIC CENTER</span>
+          <!-- Map pins injected by JS -->
+        </div>
+        <div class="location-details-panel" id="locationDetails">
+          <span class="eyebrow">SELECTED LANDMARK</span>
+          <h3 id="locTitle">Aurelia Central Command &amp; City Hall</h3>
+          <p id="locCategory" class="badge">Government</p>
+          <p id="locDesc">Unified municipal headquarters housing citizen facilitation counters, urban telemetry operations, and mayor's office.</p>
+          <ul class="meta-list" id="locMeta">
+            <li><strong>Address:</strong> 100 Civic Plaza, Central District</li>
+            <li><strong>Hours:</strong> Mon–Sat, 08:30 AM – 06:30 PM</li>
+            <li><strong>Coordinates:</strong> 16.5442° N, 80.6821° E</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="cards-grid mt-24" id="locationsGrid"></div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <h4>◈ AURELIA SMART CITY</h4>
+        <p>Integrated Urban Management &amp; Citizen Services Portal. Built for transparent, sustainable, and resilient city living.</p>
+      </div>
+      <div>
+        <h5>Quick Sections</h5>
+        <ul>
+          <li><a href="#statistics">City Statistics</a></li>
+          <li><a href="#transportation">Transportation</a></li>
+          <li><a href="#hospitals">Hospitals</a></li>
+          <li><a href="#education">Education</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Citizen Support</h5>
+        <ul>
+          <li><a href="#services">Public Services</a></li>
+          <li><a href="#emergency">Emergency Directory</a></li>
+          <li><a href="#locations">Important Locations</a></li>
+          <li><span>Helpline: 1800-425-2026</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>© 2026 Aurelia Smart City Development Corporation. All rights reserved.</span>
+      <span>Open Data Portal v4.2</span>
+    </div>
+  </footer>
+
+  <!-- SOS Modal -->
+  <div id="sosModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="sosModalTitle">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="sosModalTitle">🚨 Emergency SOS Dispatch</h3>
+        <button id="closeSosModal" class="btn-close" aria-label="Close modal">✕</button>
+      </div>
+      <p>Share your approximate sector to alert the nearest Police, Ambulance, and Fire response unit.</p>
+      <form id="sosForm">
+        <label>
+          Emergency Type
+          <select id="sosType">
+            <option value="Medical Emergency">Medical Emergency (Ambulance)</option>
+            <option value="Fire / Gas Leak">Fire / Hazardous Leak</option>
+            <option value="Police / Security">Police / Public Safety</option>
+            <option value="Traffic Accident">Road Accident Rescue</option>
+          </select>
+        </label>
+        <label>
+          Your Current Landmark / Sector
+          <input type="text" id="sosLocation" placeholder="e.g., Metro Line 1 Central Station" required />
+        </label>
+        <button type="submit" class="btn btn-sos full-width">Dispatch Immediate Alert</button>
+      </form>
+      <div id="sosStatus" class="feedback-box hidden"></div>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
